@@ -1,15 +1,13 @@
 #include "saddlePoint.h"
-#include <cmath>
 #include <vector>
-#include <cstddef>
-#include <list>
-#include <string>
-#include <utility> // std::pair, std::make_pair
-#include <iostream> // FLT_MIN
+#include <iostream>
 #include <iomanip>
+#include <limits> //std::numeric_limits
+#include <sstream> //std::istringstream
 
 void printMatrix(std::vector<std::vector<float>> matrix, float minX, float minY, float stepX, float stepY)
 {
+    std::cout << "this is the matrix based on the given function and axis range:\n\n";
     std::cout << std::fixed << std::setprecision(4);
     std::cout << std::setw(7) << "x/y" << '|';
     for(size_t col = 0; col < matrix[0].size(); ++col)
@@ -31,6 +29,7 @@ void printMatrix(std::vector<std::vector<float>> matrix, float minX, float minY,
 
 void printSaddlePoints(std::vector<elementOfMatrix> saddlePoints, float minX, float minY, float stepX, float stepY)
 {
+    std::cout << "all the saddle points in the matrix:\n\n";
     for(size_t i = 0; i < saddlePoints.size(); ++i)
     {
         std::cout << '(' << minX + saddlePoints[i].xAxis * stepX << ',' << minY + saddlePoints[i].yAxis * stepY << ") " << saddlePoints[i].val << '\n';
@@ -40,33 +39,96 @@ void printSaddlePoints(std::vector<elementOfMatrix> saddlePoints, float minX, fl
 
 int main()
 {
-    SaddlePoint test1(-5, 0.5, 5, -5, 0.5, 5);
-    test1.SelectFunction(Function::FUNCTION1);
-    test1.GenerateSampleMatrix();
-    std::vector<std::vector<float>> matrix1 = test1.GetSampleMatrix();
-    std::vector<elementOfMatrix> saddlePoints1 = test1.DetermineSaddlePoints();
-    printMatrix(matrix1, test1.GetSampleMinX(), test1.GetSampleMinY(), test1.GetSampleStepX(), test1.GetSampleStepY());
-    printSaddlePoints(saddlePoints1, test1.GetSampleMinX(), test1.GetSampleMinY(), test1.GetSampleStepX(), test1.GetSampleStepY());
-    std::cout << "\n";
+    std::cout << "This executable is used for finding the saddle point of given function and parameters\n\n";
+
+    while(true)
+    {
+        // get function option from user
+        int option;
+        while(true)
+        {
+            std::cout << "Please select the function:\n";
+
+            for(int i = 0; i < allFunction.size(); ++i)
+            {
+                std::cout << std::setw(3) << i+1 << ": " << allFunction[i] << "\n";
+            }
+            std::cout << std::setw(3) << allFunction.size()+1 << ": exit the program\n";
+
+            std::cout << "input here: ";
+            if(std::cin >> option && option > 0 && option <= allFunction.size()+1)
+            {
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                break;
+            }
+
+            std::cout << "That's not a option\n";
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
+
+        if(option == allFunction.size() + 1) break;
+
+        Function chosenFunction;
+        switch (option)
+        {
+        case 1:
+            chosenFunction = Function::FUNCTION1;
+            break;
+        case 2:
+            chosenFunction = Function::FUNCTION2;
+            break;
+        case 3:
+            chosenFunction = Function::FUNCTION3;
+            break;
+        default:
+            chosenFunction = Function::FUNCTION1;
+            break;
+        }
 
 
-    SaddlePoint test2(-5, 0.5, 5, -5, 0.5, 5);
-    test2.SelectFunction(Function::FUNCTION2);
-    test2.GenerateSampleMatrix();
-    std::vector<std::vector<float>> matrix2 = test2.GetSampleMatrix();
-    std::vector<elementOfMatrix> saddlePoints2 = test2.DetermineSaddlePoints();    
-    printMatrix(matrix2, test2.GetSampleMinX(), test2.GetSampleMinY(), test2.GetSampleStepX(), test2.GetSampleStepY());
-    printSaddlePoints(saddlePoints2, test2.GetSampleMinX(), test2.GetSampleMinY(), test2.GetSampleStepX(), test2.GetSampleStepY());
-    std::cout << "\n";
+        // get x,y range of the function
+        float xMin,xStep,xMax,yMin,yStep,yMax;
+        std::string line;
+        
+        std::cout << "\nplease enter the range of the x y axis, and the format is 'start step end'(e.g. 0 0.5 5)\n";
+        std::cout << "x axis: ";
 
-    SaddlePoint test3(-3, 0.5, 3, -3, 0.5, 3);
-    test3.SelectFunction(Function::FUNCTION3);
-    test3.GenerateSampleMatrix();
-    std::vector<std::vector<float>> matrix3 = test3.GetSampleMatrix();
-    std::vector<elementOfMatrix> saddlePoints3 = test3.DetermineSaddlePoints();
-    printMatrix(matrix3, test3.GetSampleMinX(), test3.GetSampleMinY(), test3.GetSampleStepX(), test3.GetSampleStepY());
-    printSaddlePoints(saddlePoints3, test3.GetSampleMinX(), test3.GetSampleMinY(), test3.GetSampleStepX(), test3.GetSampleStepY());
-    std::cout << "\n";
+        while(getline(std::cin, line))
+        {
+
+            std::stringstream tmp(line);
+            if(tmp >> xMin >> xStep >> xMax) break;
+            std::cout << "wrong format.It should be formatted like this '0 0.5 5'\n";
+            std::cout << "x axis: ";
+        }
+
+        std::cout << "y axis: ";
+        while(getline(std::cin, line))
+        {
+            std::stringstream tmp(line);
+            if(tmp >> yMin >> yStep >> yMax) break;
+            std::cout << "wrong format.It should be formatted like this '0 0.5 5'\n";
+            std::cout << "y axis: ";
+        }
+
+
+        // create SaddlePoint class and show saddle point
+        SaddlePoint test(xMin, xStep, xMax, yMin, yStep, yMax);
+        test.SelectFunction(chosenFunction);
+        test.GenerateSampleMatrix();
+
+        std::cout << "\n";
+        printMatrix(test.GetSampleMatrix(),test.GetSampleMinX(), test.GetSampleMinY(), test.GetSampleStepX(), test.GetSampleStepY());
+        std::cout << "\n";
+        printSaddlePoints(test.DetermineSaddlePoints(), test.GetSampleMinX(), test.GetSampleMinY(), test.GetSampleStepX(), test.GetSampleStepY());
+        std::cout << "\n";
+        fflush(stdin);
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+    }
 
     return 0;
 }

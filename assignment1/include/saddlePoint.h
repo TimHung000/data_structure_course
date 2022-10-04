@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <array>
 
 typedef float (*MathFunc)(float, float);
 
@@ -12,6 +13,8 @@ enum class Function
     FUNCTION2,
     FUNCTION3,
 };
+
+const std::array<std::string,3> allFunction = {"y * sin(x) - x * cos(y)", "-cos(x) + sin(y)", "sqrt(x^2 + y^2)"};
 
 typedef struct elementOfMatrix
 {
