@@ -1,3 +1,11 @@
+/**
+ * Find the saddle points based on chosen function and parameters
+ * 
+ * @class_hw: NSYSU_Data_Structure assignment1
+ * @author Hao Yu Hung(M113040047)
+ * @date   2022/10/01
+ * 
+ */ 
 #include "saddlePoint.h"
 #include <vector>
 #include <iostream>
@@ -124,9 +132,6 @@ int main()
         std::cout << "\n";
         printSaddlePoints(test.DetermineSaddlePoints(), test.GetSampleMinX(), test.GetSampleMinY(), test.GetSampleStepX(), test.GetSampleStepY());
         std::cout << "\n";
-        fflush(stdin);
-        std::cin.clear();
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
     }
 

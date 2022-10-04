@@ -1,9 +1,8 @@
 /**
  * Find the saddle points based on chosen function and parameters
  * 
- * 
  * @class_hw: NSYSU_Data_Structure assignment1
- * @author Hao Yu Hung
+ * @author Hao Yu Hung(M113040047)
  * @date   2022/10/01
  * 
  */ 
@@ -31,17 +30,6 @@ float function2(float x, float y)
 float function3(float x, float y)
 {
     return std::sqrt(std::pow(x, 2) + std::pow(y, 2)); 
-}
-
-SaddlePoint::SaddlePoint()
-{
-    matrix = {
-        {10,12,7,3,12},
-        {3,10,6,2,8},
-        {18,24,17,6,10},
-        {15,21,10,8,12},
-        {1,18,22,4,15}
-    };
 }
 
 SaddlePoint::SaddlePoint(float minX, float stepX, float maxX, float minY, float stepY, float maxY)
