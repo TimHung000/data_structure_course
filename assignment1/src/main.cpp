@@ -38,6 +38,9 @@ void printMatrix(std::vector<std::vector<float>> matrix, float minX, float minY,
 void printSaddlePoints(std::vector<elementOfMatrix> saddlePoints, float minX, float minY, float stepX, float stepY)
 {
     std::cout << "all the saddle points in the matrix:\n\n";
+    if(saddlePoints.size() == 0)
+        std::cout << "No saddle points" << std::endl;
+        
     for(size_t i = 0; i < saddlePoints.size(); ++i)
     {
         std::cout << '(' << minX + saddlePoints[i].xAxis * stepX << ',' << minY + saddlePoints[i].yAxis * stepY << ") " << saddlePoints[i].val << '\n';
