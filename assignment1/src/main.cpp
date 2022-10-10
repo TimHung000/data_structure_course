@@ -37,14 +37,16 @@ void printMatrix(std::vector<std::vector<float>> matrix, float minX, float minY,
 
 void printSaddlePoints(std::vector<elementOfMatrix> saddlePoints, float minX, float minY, float stepX, float stepY)
 {
-    std::cout << "all the saddle points in the matrix:\n\n";
+    std::cout << "-----------------------------------------------------------" << "\n";
+    std::cout << "Saddle point(s) found at:\n\n";
     if(saddlePoints.size() == 0)
-        std::cout << "No saddle points" << std::endl;
+        std::cout << "No saddle point found" << std::endl;
         
     for(size_t i = 0; i < saddlePoints.size(); ++i)
     {
-        std::cout << '(' << minX + saddlePoints[i].xAxis * stepX << ',' << minY + saddlePoints[i].yAxis * stepY << ") " << saddlePoints[i].val << '\n';
+        std::cout << "X = " << std::setw(8) << minX + saddlePoints[i].xAxis * stepX << ", Y = " << std::setw(8) << minY + saddlePoints[i].yAxis * stepY << ", Value = " << std::setw(8) << saddlePoints[i].val << '\n';
     }
+    std::cout << "-----------------------------------------------------------" << "\n";
 }
 
 
@@ -103,7 +105,7 @@ int main()
         float xMin,xStep,xMax,yMin,yStep,yMax;
         std::string line;
         
-        std::cout << "\nplease enter the range of the x y axis, and the format is 'start step end'(e.g. 0 0.5 5)\n";
+        std::cout << "\nplease enter the range of the x y axis, and the format is 'start step end'(e.g. -5 0.5 5)\n";
         std::cout << "x axis: ";
 
         while(getline(std::cin, line))
@@ -111,7 +113,7 @@ int main()
 
             std::stringstream tmp(line);
             if(tmp >> xMin >> xStep >> xMax) break;
-            std::cout << "wrong format.It should be formatted like this '0 0.5 5'\n";
+            std::cout << "wrong format.It should be formatted like this '-5 0.5 5'\n";
             std::cout << "x axis: ";
         }
 
@@ -120,7 +122,7 @@ int main()
         {
             std::stringstream tmp(line);
             if(tmp >> yMin >> yStep >> yMax) break;
-            std::cout << "wrong format.It should be formatted like this '0 0.5 5'\n";
+            std::cout << "wrong format.It should be formatted like this '-5 0.5 5'\n";
             std::cout << "y axis: ";
         }
 
